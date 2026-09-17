@@ -330,3 +330,22 @@
 .restart-button:hover {
   transform: translateY(-2px);
 }
+.memory-grid{
+  width:min(600px,100%);
+  margin:30px auto;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+}
+
+.memory-card{
+  height:120px;
+  border:1px solid #2d2862;
+  border-radius:15px;
+  background:#191744;
+  color:#fff;
+  font-size:40px;
+  cursor:pointer;
+}
+
+.memory-card:hover{transform:scale(1.03);}
