@@ -285,3 +285,48 @@
   color: #aaa5d1;
   font-size: 17px;
 }
+.game-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin: 25px auto;
+  max-width: 700px;
+}
+
+.stat-box {
+  min-width: 120px;
+  padding: 15px 20px;
+  background: #191744;
+  border: 1px solid #2d2862;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.stat-box span {
+  display: block;
+  color: #aaa5d1;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.stat-box strong {
+  font-size: 22px;
+  color: #fff;
+}
+
+.restart-button {
+  padding: 15px 20px;
+  border: 0;
+  border-radius: 15px;
+  background: #6c5ce7;
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.restart-button:hover {
+  transform: translateY(-2px);
+}
