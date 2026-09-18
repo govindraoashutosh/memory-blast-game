@@ -86,13 +86,16 @@ useEffect(()=>{
       ));
     },800);
   }
-
-  setFlippedCards([]);
+    setFlippedCards([]);
 },[flippedCards]);
-  
 
+ useEffect(()=>{
+  if(time===0)return;
+  const timer=setTimeout(()=>setTime(time-1),1000);
+  return()=>clearTimeout(timer);
+},[time]);
 
-  return (
+return (
   <div className="memory-game">
     <GameHeader />
 
@@ -109,4 +112,14 @@ useEffect(()=>{
 export default MemoryGame;
 
 
+  
+
+
+  
+
+
+   
+
+
+  
 
