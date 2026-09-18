@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useState,useEffect} from "react";
 import GameHeader from "./GameHeader";
 import GameStats from "./GameStats";
 import MemoryGrid from "./memoryGrid";
@@ -55,22 +55,40 @@ function MemoryGame() {
   const [moves, setMoves] = useState(0);
   const [pairs, setPairs] = useState(0);
   const [cards, setCards] = useState(() => createDeck());
+  const [flippedCards,setFlippedCards]=useState([]);
 
-  const handleCardClick = (cardId) => {
-  const clickedCard = cards.find((card) => card.id === cardId);
+  const handleCardClick=(cardId)=>{
+  const clickedCard=cards.find(card=>card.id===cardId);
+  if(!clickedCard||clickedCard.isFlipped||clickedCard.isMatched||flippedCards.length===2)return;
 
-  if (!clickedCard) return;
-  if (clickedCard.isFlipped || clickedCard.isMatched) return;
+  setCards(prev=>prev.map(card=>
+    card.id===cardId?{...card,isFlipped:true}:card
+  ));
 
-  setCards((previousCards) =>
-    previousCards.map((card) =>
-      card.id === cardId
-        ? { ...card, isFlipped: true }
-        : card
-    )
-  );
+  setFlippedCards(prev=>[...prev,clickedCard]);
+  setMoves(prev=>prev+1);
 };
+useEffect(()=>{
+  if(flippedCards.length!==2)return;
 
+  const [first,second]=flippedCards;
+
+  if(first.value===second.value){
+    setCards(prev=>prev.map(card=>
+      card.value===first.value?{...card,isMatched:true}:card
+    ));
+    setPairs(prev=>prev+1);
+  }else{
+    setTimeout(()=>{
+      setCards(prev=>prev.map(card=>
+        card.id===first.id||card.id===second.id
+          ?{...card,isFlipped:false}:card
+      ));
+    },800);
+  }
+
+  setFlippedCards([]);
+},[flippedCards]);
   
 
 
