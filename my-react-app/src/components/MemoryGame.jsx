@@ -67,6 +67,26 @@ function MemoryGame() {
 
   setFlippedCards(prev=>[...prev,clickedCard]);
   setMoves(prev=>prev+1);
+
+  if(clickedCard.type==="bomb"){
+    setTime(prev=>Math.max(0,prev-10));
+    setTimeout(()=>{
+      setCards(prev=>prev.map(card=>
+        card.id===cardId?{...card,isFlipped:false}:card
+      ));
+    },800);
+    return;
+  };
+
+   if(clickedCard.type==="time"){
+    setTime(prev=>prev+10);
+    setTimeout(()=>{
+      setCards(prev=>prev.map(card=>
+        card.id===cardId?{...card,isFlipped:false}:card
+      ));
+    },800);
+    return;
+  };
 };
 useEffect(()=>{
   if(flippedCards.length!==2)return;
