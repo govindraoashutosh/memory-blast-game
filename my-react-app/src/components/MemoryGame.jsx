@@ -2,6 +2,7 @@ import {useState,useEffect} from "react";
 import GameHeader from "./GameHeader";
 import GameStats from "./GameStats";
 import MemoryGrid from "./memoryGrid";
+import ResultBox from "./ResultBox";
 
 
 const CARD_VALUES = ["🍎", "🍌", "🍇", "🍕", "🚀"];
@@ -56,16 +57,16 @@ function MemoryGame() {
   const [pairs, setPairs] = useState(0);
   const [cards, setCards] = useState(() => createDeck());
   const [flippedCards,setFlippedCards]=useState([]);
+  const [gameStatus,setGameStatus]=useState("playing");
 
   const handleCardClick=(cardId)=>{
   const clickedCard=cards.find(card=>card.id===cardId);
-  if(!clickedCard||clickedCard.isFlipped||clickedCard.isMatched||flippedCards.length===2)return;
-
+  if(gameStatus!=="playing"||!clickedCard||clickedCard.isFlipped||clickedCard.isMatched||flippedCards.length===2)return;
   setCards(prev=>prev.map(card=>
     card.id===cardId?{...card,isFlipped:true}:card
   ));
 
-  setFlippedCards(prev=>[...prev,clickedCard]);
+  
   setMoves(prev=>prev+1);
 
   if(clickedCard.type==="bomb"){
@@ -87,7 +88,18 @@ function MemoryGame() {
     },800);
     return;
   };
+  setFlippedCards(prev=>[...prev,clickedCard]);
 };
+
+const restartGame=()=>{
+    setTime(50);
+    setMoves(0);
+    setPairs(0);
+    setCards(createDeck());
+    setFlippedCards([]);
+    setGameStatus("playing");
+}
+
 useEffect(()=>{
   if(flippedCards.length!==2)return;
 
@@ -115,6 +127,12 @@ useEffect(()=>{
   return()=>clearTimeout(timer);
 },[time]);
 
+useEffect(()=>{
+  if(gameStatus!=="playing")return;
+   if(pairs===5)setGameStatus("won");
+  else if(time===0)setGameStatus("lost");
+},[pairs,time,gameStatus]);
+
 return (
   <div className="memory-game">
     <GameHeader />
@@ -126,13 +144,26 @@ return (
     />
       <MemoryGrid cards={cards}
       onCardClick={handleCardClick} />
+
+      {gameStatus!=="playing"&&(
+  <ResultBox
+    status={gameStatus}
+    moves={moves}
+    onRestart={restartGame}
+  />
+)}
   </div>
+  
 );
 }
 export default MemoryGame;
 
 
   
+
+ 
+
+
 
 
   
