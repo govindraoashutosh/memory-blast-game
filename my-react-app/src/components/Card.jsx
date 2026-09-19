@@ -7,7 +7,7 @@ function Card({ card, onClick, disabled }) {
       onClick={() => onClick(card.id)}
       disabled={disabled}
     >
-      {isVisible ? card.value : "?"}
+     {isVisible?<img src={card.value} alt="card"/>:"?"}
     </button>
   );
 }

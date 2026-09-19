@@ -5,8 +5,13 @@ import MemoryGrid from "./memoryGrid";
 import ResultBox from "./ResultBox";
 
 
-const CARD_VALUES = ["🍎", "🍌", "🍇", "🍕", "🚀"];
-
+const CARD_VALUES=[
+  "/cards/spiderman.jpg",
+  "/cards/thor.jpg",
+  "/cards/captain.jpg",
+  "/cards/ironman.jpg",
+  "/cards/hulk.jpg"
+];
 function createDeck(){
    const Normalcards = CARD_VALUES.flatMap((value) =>[
     {
@@ -27,14 +32,14 @@ function createDeck(){
   const specialCards = [
   {
     id: crypto.randomUUID(),
-    value: "💣",
+    value:"/cards/doom.jpg",
     type: "bomb",
     isFlipped: false,
     isMatched: false
   },
   {
     id: crypto.randomUUID(),
-    value: "⏱️",
+    value:"/cards/strange.jpg",
     type: "time",
     isFlipped: false,
     isMatched: false
