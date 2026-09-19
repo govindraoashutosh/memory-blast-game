@@ -35,14 +35,16 @@ function createDeck(){
     value:"/cards/doom.jpg",
     type: "bomb",
     isFlipped: false,
-    isMatched: false
+    isMatched: false,
+    
   },
   {
     id: crypto.randomUUID(),
     value:"/cards/strange.jpg",
     type: "time",
     isFlipped: false,
-    isMatched: false
+    isMatched: false,
+    
   }
 ];
 return [...Normalcards, ...specialCards].sort(
@@ -63,6 +65,12 @@ function MemoryGame() {
   const [cards, setCards] = useState(() => createDeck());
   const [flippedCards,setFlippedCards]=useState([]);
   const [gameStatus,setGameStatus]=useState("playing");
+  const [usedSpecialCards,setUsedSpecialCards]=useState({
+  bomb:false,
+  time:false
+});
+
+  
 
   const handleCardClick=(cardId)=>{
   const clickedCard=cards.find(card=>card.id===cardId);
@@ -73,19 +81,36 @@ function MemoryGame() {
 
   
   setMoves(prev=>prev+1);
+  console.log("clickedCard");
 
   if(clickedCard.type==="bomb"){
-    setTime(prev=>Math.max(0,prev-10));
+     if(!usedSpecialCards.bomb){
+       setUsedSpecialCards(prev=>({...prev,bomb:true}));
+      setTime(prev=>Math.max(0,prev-10));
+    }
+      
+       
+       
+     
+     
+
+    
     setTimeout(()=>{
       setCards(prev=>prev.map(card=>
         card.id===cardId?{...card,isFlipped:false}:card
       ));
     },800);
-    return;
-  };
+    return;}
+  
+
 
    if(clickedCard.type==="time"){
-    setTime(prev=>prev+10);
+     if(!usedSpecialCards.time){
+     setUsedSpecialCards(prev=>({...prev,time:true}));
+      setTime(prev=>Math.min(50,prev+10));
+     
+    
+     }
     setTimeout(()=>{
       setCards(prev=>prev.map(card=>
         card.id===cardId?{...card,isFlipped:false}:card
@@ -103,6 +128,10 @@ const restartGame=()=>{
     setCards(createDeck());
     setFlippedCards([]);
     setGameStatus("playing");
+      setUsedSpecialCards({
+    bomb:false,
+    time:false
+  });
 }
 
 useEffect(()=>{
@@ -146,6 +175,7 @@ return (
       time={time}
       moves={moves}
       pairs={pairs}
+       onRestart={restartGame}
     />
       <MemoryGrid cards={cards}
       onCardClick={handleCardClick} />
